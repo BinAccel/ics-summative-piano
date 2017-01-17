@@ -17,6 +17,12 @@ public class Instruments {
         return MidiSystem.getSynthesizer().getAvailableInstruments();
     }
     
+    /**
+     * Get all the avalible insturments on the computer as an array of strings
+     * @return Returns all avaible instruments as an array of strings
+     * @throws Midi UnavailableException
+     */
+    
     public static String[] getNames() throws MidiUnavailableException {
         Instrument[] tmp = getInstruments();
         String[] names = new String[tmp.length];
