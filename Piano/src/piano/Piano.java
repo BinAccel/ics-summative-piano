@@ -16,7 +16,7 @@ public class Piano extends JFrame{
         setTitle("Notepad");
         addKeyListener(new KeyAdapter(){
             public void keyPressed(KeyEvent evt) {
-                
+                pianoKeys[keys.get(evt.getKeyCode()) - 60].press();
             }
             
             public void keyReleased(KeyEvent evt) {
@@ -62,6 +62,6 @@ public class Piano extends JFrame{
     }
     
     private HashMap<Integer, Integer>keys;
-    private Sequencer sequencer;
+    private Synthesizer synthesizer ;
     Key[]pianoKeys = new Key[12];
 }
