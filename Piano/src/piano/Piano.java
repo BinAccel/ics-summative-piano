@@ -25,6 +25,7 @@ public class Piano extends JFrame{
     
     private void registerKeys() {
         keys.put(KeyEvent.VK_A, 60); //C
+        pianoKeys[0] = new Key(Keys.BLACK, 60);
         keys.put(KeyEvent.VK_W, 61); //C#
         keys.put(KeyEvent.VK_S, 62); //D
         keys.put(KeyEvent.VK_E, 63); //D#
@@ -40,5 +41,6 @@ public class Piano extends JFrame{
     }
     
     private HashMap<Integer, Integer>keys;
+    Key[]pianoKeys = new Key[keys.size()];;
     private Sequencer sequencer;
 }
