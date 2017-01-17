@@ -12,7 +12,17 @@ public class Piano extends JFrame{
 
     public Piano() {
         registerKeys();
-        
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Notepad");
+        addKeyListener(new KeyAdapter(){
+            public void keyPressed(KeyEvent evt) {
+                
+            }
+            
+            public void keyReleased(KeyEvent evt) {
+                
+            }
+        });
     }
     
     public static void main(String[] args) {
