@@ -68,7 +68,7 @@ public class Key {
         return keycode;
     }
     
-    public void depress() {
+    public int depress() {
         pressed = false;
         try {
             if(null != type) switch (type) {
@@ -87,6 +87,7 @@ public class Key {
             System.err.printf("There was an error retrieving the resource '%s'. Now Exiting...", type == Keys.BLACK? "black_key.png": "white_key.png");
             System.exit(-1);
         }
+        return keycode;
     }
 }
 

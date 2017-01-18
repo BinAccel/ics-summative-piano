@@ -18,8 +18,8 @@ public class Instruments {
     }
     
     /**
-     * Get all the avalible insturments on the computer as an array of strings
-     * @return Returns all avaible instruments as an array of strings
+     * Get all the available instruments on the computer as an array of strings
+     * @return Returns all available instruments as an array of strings
      * @throws Midi UnavailableException
      */
     public static String[] getNames() throws MidiUnavailableException {

@@ -3,34 +3,40 @@ package piano;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 import javax.sound.midi.*;
 import javax.swing.*;
 
 public class Piano extends JFrame{
 
     public Piano() {
-        registerKeys();
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Notepad");
-        addKeyListener(new KeyAdapter(){
-            public void keyPressed(KeyEvent evt) {
-                pianoKeys[keys.get(evt.getKeyCode()) - 60].press();
-            }
+        try{
+            keys = new HashMap<>();
+            registerKeys();
+            setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+            setTitle("Notepad");
+            synthesizer = MidiSystem.getSynthesizer();
+            synthesizer.open();
+            synthesizer.loadAllInstruments(synthesizer.getDefaultSoundbank());
+            MidiChannel[]channels = synthesizer.getChannels();
+            addKeyListener(new KeyAdapter(){
+                public void keyPressed(KeyEvent evt) {
+                    channels[0].noteOn(pianoKeys[keys.get(evt.getKeyCode()) - 60].press(), 100);
+                }
+
+                public void keyReleased(KeyEvent evt) {
+                    channels[0].noteOff(pianoKeys[keys.get(evt.getKeyCode())-60].depress());
+                }
+            });
             
-            public void keyReleased(KeyEvent evt) {
-                
-            }
-        });
+            pack();
+        } catch(MidiUnavailableException ex) {
+            Logger.getLogger(Piano.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public static void main(String[] args) {
         new Piano().setVisible(true);
-    }
-    
-    private void play(int i) {
-        
     }
     
     private void registerKeys() {
