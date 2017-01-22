@@ -12,9 +12,10 @@ public class Piano extends JFrame{
     public Piano() {
         try{
             keys = new HashMap<>();
+            pianoKeys = new Key[12];
             registerKeys();
             setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-            setTitle("Notepad");
+            setTitle("Piano");
             synthesizer = MidiSystem.getSynthesizer();
             synthesizer.open();
             synthesizer.loadAllInstruments(synthesizer.getDefaultSoundbank());
@@ -28,8 +29,9 @@ public class Piano extends JFrame{
                     channels[0].noteOff(pianoKeys[keys.get(evt.getKeyCode())-60].depress());
                 }
             });
-            
             pack();
+            setSize(600, 400);
+            setResizable(false);
         } catch(MidiUnavailableException ex) {
             Logger.getLogger(Piano.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -69,5 +71,5 @@ public class Piano extends JFrame{
     
     private HashMap<Integer, Integer>keys;
     private Synthesizer synthesizer ;
-    Key[]pianoKeys = new Key[12];
+    Key[]pianoKeys;
 }
