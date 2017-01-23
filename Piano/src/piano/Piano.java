@@ -5,15 +5,18 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import java.util.logging.*;
+
 import javax.sound.midi.*;
 import javax.swing.*;
+import javax.swing.Timer;
 
-public class Piano extends JFrame{
-
+public class Piano extends JFrame implements KeyListener{
+	public static MidiChannel[]mc;
+    public static boolean[] noteon=new boolean[128];
     public Piano() {
         try{
             keys = new HashMap<>();
-            pianoKeys = new Key[12];
+            pianoKeys = new Key[13];
             registerKeys();
             setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
             setTitle("Piano");
@@ -21,20 +24,14 @@ public class Piano extends JFrame{
             synthesizer = MidiSystem.getSynthesizer();
             synthesizer.open();
             synthesizer.loadAllInstruments(synthesizer.getDefaultSoundbank());
-            MidiChannel[]channels = synthesizer.getChannels();
-            addKeyListener(new KeyAdapter(){
-                public void keyPressed(KeyEvent evt) {
-                    if(keys.containsKey(evt.getKeyCode()))
-                    channels[0].noteOn(pianoKeys[keys.get(evt.getKeyCode()) - 60].press(), 100);
-                }
-
-                public void keyReleased(KeyEvent evt) {
-                    if(keys.containsKey(evt.getKeyCode()))
-                    channels[0].noteOff(pianoKeys[keys.get(evt.getKeyCode())-60].depress());
-                }
-            });
+            mc = synthesizer.getChannels();
+            mc[0].programChange(0,54);
+            //mc[0].controlChange(67, 127);
+            for(int a=0;a<128;a++){
+            	//channels[0].noteOn(a,100);
+            }
+            addKeyListener(this);
             content.add(pianoKeys[0]);
-            content.add(pianoKeys[1]);
             //content.add(new JLabel("HI!"));
             pack();
             setSize(1000, 600);
@@ -46,6 +43,17 @@ public class Piano extends JFrame{
     
     public static void main(String[] args) {
         new Piano().setVisible(true);
+        while(true){
+        	for(int a=60;a<=72;a++){
+    			if(noteon[a]){
+    				mc[0].noteOn(a, 100);
+    			}
+    			else{
+    				mc[0].noteOff(a);
+    			}
+    		}
+        	psit(100);
+        }
     }
     
     private void registerKeys() {
@@ -74,9 +82,31 @@ public class Piano extends JFrame{
         keys.put(KeyEvent.VK_L, 71); //B
         pianoKeys[11] = new Key(Keys.WHITE, 71);
         keys.put(KeyEvent.VK_SEMICOLON, 72); //C
+        pianoKeys[12] = new Key(Keys.WHITE, 72);
     }
     
     private HashMap<Integer, Integer>keys;
     private Synthesizer synthesizer ;
     Key[]pianoKeys;
+    public static void psit(int x) {
+        try {
+            Thread.sleep(x);
+        }
+        catch (Exception e){
+                
+        }
+    }
+    @Override
+    public void keyPressed(KeyEvent evt) {
+		if(keys.contains(evt.getKeyCode()))
+        	noteon[pianoKeys[keys.get(evt.getKeyCode()) - 60].press()]=true;
+    }
+    @Override
+    public void keyReleased(KeyEvent evt) {
+		if(keys.contains(evt.getKeyCode()))
+    		noteon[pianoKeys[keys.get(evt.getKeyCode()) - 60].press()]=false;
+    }
+	@Override
+	public void keyTyped(KeyEvent evt) {
+	}
 }
