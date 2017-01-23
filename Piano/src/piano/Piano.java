@@ -1,5 +1,6 @@
 package piano;
 
+import java.awt.Container;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
@@ -16,6 +17,7 @@ public class Piano extends JFrame{
             registerKeys();
             setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
             setTitle("Piano");
+            Container content = getContentPane();
             synthesizer = MidiSystem.getSynthesizer();
             synthesizer.open();
             synthesizer.loadAllInstruments(synthesizer.getDefaultSoundbank());
@@ -29,8 +31,9 @@ public class Piano extends JFrame{
                     channels[0].noteOff(pianoKeys[keys.get(evt.getKeyCode())-60].depress());
                 }
             });
+            //content.add(pianoKeys[0].getLabel());
             pack();
-            setSize(600, 400);
+            setSize(1000, 600);
             setResizable(false);
         } catch(MidiUnavailableException ex) {
             Logger.getLogger(Piano.class.getName()).log(Level.SEVERE, null, ex);
