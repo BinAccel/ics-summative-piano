@@ -115,21 +115,21 @@ public class Piano extends JFrame implements KeyListener{
 		else if(evt.getKeyCode()==KeyEvent.VK_C||evt.getKeyCode()==KeyEvent.VK_V){
 			if(evt.getKeyCode()==KeyEvent.VK_C&&!check[0]){
 				check[0]=true;
-				offset[0]-=12;
+				if(offset[0]>=-24)offset[0]-=12;
 			}
 			else if(!check[1]){
 				check[1]=true;
-				offset[0]+=12;
+				if(offset[0]<=36)offset[0]+=12;
 			}
 		}
 		else if(evt.getKeyCode()==KeyEvent.VK_N||evt.getKeyCode()==KeyEvent.VK_M){
 			if(evt.getKeyCode()==KeyEvent.VK_N&&!check[2]){
 				check[2]=true;
-				offset[1]-=12;
+				if(offset[1]>=-24)offset[1]-=12;
 			}
 			else if(!check[3]){
 				check[3]=true;
-				offset[1]+=12;
+				if(offset[1]<=36)offset[1]+=12;
 			}
 		}
     }
