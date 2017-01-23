@@ -1,5 +1,6 @@
 package piano;
 
+import java.awt.Dimension;
 import java.io.*;
 import javax.imageio.*;
 import javax.swing.*;
@@ -81,6 +82,11 @@ public class Key extends JLabel{
             System.exit(-1);
         }
         return keycode;
+    }
+    
+    public Dimension getPreferredSize()
+    {
+        return getSize();
     }
 }
 

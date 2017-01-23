@@ -11,8 +11,8 @@ import javax.swing.*;
 import javax.swing.Timer;
 
 public class Piano extends JFrame implements KeyListener{
-	public static int[] offset=new int[2];
-	public static MidiChannel[]mc;
+    public static int[] offset=new int[2];
+    public static MidiChannel[]mc;
     public static boolean[] noteon=new boolean[128];
     public static boolean[] check=new boolean[4];
     public static int[] side=new int[128];
@@ -29,18 +29,15 @@ public class Piano extends JFrame implements KeyListener{
             synthesizer.loadAllInstruments(synthesizer.getDefaultSoundbank());
             mc = synthesizer.getChannels();
             mc[0].programChange(0,54);
-            //mc[0].controlChange(67, 127);
-            for(int a=0;a<128;a++){
-            	//channels[0].noteOn(a,100);
-            }
             addKeyListener(this);
-            content.add(pianoKeys[0]);
-            //content.add(new JLabel("HI!"));
+            JPanel keyPanel = new JPanel();
+            keyPanel.add(pianoKeys[0]);
+            content.add(keyPanel);
+            //content.add(pianoKeys[0]);
             pack();
             setSize(1000, 600);
             setResizable(false);
         } catch(MidiUnavailableException ex) {
-            Logger.getLogger(Piano.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -54,12 +51,10 @@ public class Piano extends JFrame implements KeyListener{
     			}
     		}
         	for(int a=0;a<128;a++){
-        		if(pres[a]){
-        			mc[0].noteOn(a, 100);
-        		}
-        		else{
-        			mc[0].noteOff(a);
-        		}
+        		if(pres[a])
+                            mc[0].noteOn(a, 100);
+        		else
+                            mc[0].noteOff(a);
         	}
         	psit(100);
         }
@@ -110,33 +105,33 @@ public class Piano extends JFrame implements KeyListener{
     }
     @Override
     public void keyPressed(KeyEvent evt) {
-		if(keys.containsKey(evt.getKeyCode()))
-        	noteon[pianoKeys[keys.get(evt.getKeyCode()) - 60].press()]=true;
-		else if(evt.getKeyCode()==KeyEvent.VK_C||evt.getKeyCode()==KeyEvent.VK_V){
-			if(evt.getKeyCode()==KeyEvent.VK_C&&!check[0]){
-				check[0]=true;
-				if(offset[0]>=-24)offset[0]-=12;
-			}
-			else if(!check[1]){
-				check[1]=true;
-				if(offset[0]<=36)offset[0]+=12;
-			}
-		}
-		else if(evt.getKeyCode()==KeyEvent.VK_N||evt.getKeyCode()==KeyEvent.VK_M){
-			if(evt.getKeyCode()==KeyEvent.VK_N&&!check[2]){
-				check[2]=true;
-				if(offset[1]>=-24)offset[1]-=12;
-			}
-			else if(!check[3]){
-				check[3]=true;
-				if(offset[1]<=36)offset[1]+=12;
-			}
-		}
+        if(keys.containsKey(evt.getKeyCode()))
+        noteon[pianoKeys[keys.get(evt.getKeyCode()) - 60].press()]=true;
+        else if(evt.getKeyCode()==KeyEvent.VK_C||evt.getKeyCode()==KeyEvent.VK_V){
+                if(evt.getKeyCode()==KeyEvent.VK_C&&!check[0]){
+                        check[0]=true;
+                        if(offset[0]>=-24)offset[0]-=12;
+                }
+                else if(!check[1]){
+                        check[1]=true;
+                        if(offset[0]<=36)offset[0]+=12;
+                }
+        }
+        else if(evt.getKeyCode()==KeyEvent.VK_N||evt.getKeyCode()==KeyEvent.VK_M){
+                if(evt.getKeyCode()==KeyEvent.VK_N&&!check[2]){
+                        check[2]=true;
+                        if(offset[1]>=-24)offset[1]-=12;
+                }
+                else if(!check[3]){
+                        check[3]=true;
+                        if(offset[1]<=36)offset[1]+=12;
+                }
+        }
     }
     @Override
     public void keyReleased(KeyEvent evt) {
 		if(keys.containsKey(evt.getKeyCode()))
-    		noteon[pianoKeys[keys.get(evt.getKeyCode()) - 60].press()]=false;
+    		noteon[pianoKeys[keys.get(evt.getKeyCode()) - 60].depress()]=false;
 		else if(evt.getKeyCode()==KeyEvent.VK_C||evt.getKeyCode()==KeyEvent.VK_V||evt.getKeyCode()==KeyEvent.VK_N||evt.getKeyCode()==KeyEvent.VK_M){
 			if(evt.getKeyCode()==KeyEvent.VK_C){
 				check[0]=false;
