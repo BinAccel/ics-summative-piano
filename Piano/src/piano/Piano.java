@@ -98,12 +98,12 @@ public class Piano extends JFrame implements KeyListener{
     }
     @Override
     public void keyPressed(KeyEvent evt) {
-		if(keys.contains(evt.getKeyCode()))
+		if(keys.containsKey(evt.getKeyCode()))
         	noteon[pianoKeys[keys.get(evt.getKeyCode()) - 60].press()]=true;
     }
     @Override
     public void keyReleased(KeyEvent evt) {
-		if(keys.contains(evt.getKeyCode()))
+		if(keys.containsKey(evt.getKeyCode()))
     		noteon[pianoKeys[keys.get(evt.getKeyCode()) - 60].press()]=false;
     }
 	@Override
