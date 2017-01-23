@@ -5,7 +5,6 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import java.util.logging.*;
-
 import javax.sound.midi.*;
 import javax.swing.*;
 import javax.swing.Timer;
@@ -31,7 +30,9 @@ public class Piano extends JFrame implements KeyListener{
             mc[0].programChange(0,54);
             addKeyListener(this);
             JPanel keyPanel = new JPanel();
-            keyPanel.add(pianoKeys[0]);
+            OverlayLayout ol = new OverlayLayout(keyPanel);
+            ol.addLayoutComponent("K1", pianoKeys[0]);
+            //ol.addLayoutComponent("Key 2", pianoKeys[1]);
             content.add(keyPanel);
             //content.add(pianoKeys[0]);
             pack();
