@@ -31,13 +31,13 @@ public class Piano extends JFrame implements KeyListener{
             	//channels[0].noteOn(a,100);
             }
             addKeyListener(this);
+            JPanel keyPanel = new JPanel();
             content.add(pianoKeys[0]);
             //content.add(new JLabel("HI!"));
             pack();
             setSize(1000, 600);
             setResizable(false);
         } catch(MidiUnavailableException ex) {
-            Logger.getLogger(Piano.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -98,15 +98,14 @@ public class Piano extends JFrame implements KeyListener{
     }
     @Override
     public void keyPressed(KeyEvent evt) {
-		if(keys.contains(evt.getKeyCode()))
+		//if(keys.containsKey(evt.getKeyCode()))
         	noteon[pianoKeys[keys.get(evt.getKeyCode()) - 60].press()]=true;
     }
     @Override
     public void keyReleased(KeyEvent evt) {
-		if(keys.contains(evt.getKeyCode()))
-    		noteon[pianoKeys[keys.get(evt.getKeyCode()) - 60].press()]=false;
+		//if(keys.containsKey(evt.getKeyCode()))
+    		noteon[pianoKeys[keys.get(evt.getKeyCode()) - 60].depress()]=false;
     }
-	@Override
-	public void keyTyped(KeyEvent evt) {
-	}
+    
+    public void keyTyped(KeyEvent evt){}
 }
