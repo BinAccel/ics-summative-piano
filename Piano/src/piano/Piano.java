@@ -24,14 +24,17 @@ public class Piano extends JFrame{
             MidiChannel[]channels = synthesizer.getChannels();
             addKeyListener(new KeyAdapter(){
                 public void keyPressed(KeyEvent evt) {
+                    if(keys.containsKey(evt.getKeyCode()))
                     channels[0].noteOn(pianoKeys[keys.get(evt.getKeyCode()) - 60].press(), 100);
                 }
 
                 public void keyReleased(KeyEvent evt) {
+                    if(keys.containsKey(evt.getKeyCode()))
                     channels[0].noteOff(pianoKeys[keys.get(evt.getKeyCode())-60].depress());
                 }
             });
-            //content.add(pianoKeys[0].getLabel());
+            content.add(pianoKeys[0]);
+            //content.add(new JLabel("HI!"));
             pack();
             setSize(1000, 600);
             setResizable(false);

@@ -7,10 +7,7 @@ import javax.swing.*;
  *
  * @author roger
  */
-public class Key {
-    
-    //Someday I will learn how to make this extend JLabel
-    //But not today
+public class Key extends JLabel{
     
     /**
      * The type of key
@@ -19,27 +16,11 @@ public class Key {
     private Keys type;
     private boolean pressed;
     private int keycode;
-    /**
-     * The key, stored as a label
-     * <p>
-     * This value exists only because I have no idea how to make the class extend <tt>JLabel</tt>
-     * @deprecated 
-     */
-    private JLabel label;
     
     public Key(Keys type, int keycode) {
-        depress();
         this.type = type;
         this.keycode = keycode;
-    }
-    
-    /**
-     * Returns the key as a JLabel
-     * @return Returns the key's representation as a <tt>JLabel</tt> so it can be easily added to the screen
-     * @deprecated 
-     */
-    public JLabel getLabel() {
-        return label;
+        depress();
     }
     
     /**
@@ -48,19 +29,25 @@ public class Key {
      */
     public int press() {
         pressed = true;
+        ImageIcon ii = null;
         try {
             if(null != type) switch (type) {
                 case BLACK:
-                    label = new JLabel(new ImageIcon(ImageIO.read(ImgResources.BLACK_KEY_PRESSED)));
+                    ii = new ImageIcon(ImageIO.read(ImgResources.BLACK_KEY_PRESSED));
                     break;
                 case WHITE:
-                    label = new JLabel(new ImageIcon(ImageIO.read(ImgResources.WHITE_KEY_PRESSED)));
+                    ii = new ImageIcon(ImageIO.read(ImgResources.WHITE_KEY_PRESSED));
                     break;
                 default:
                     System.err.printf("Unknown key type detected! Now exiting...");
                     System.exit(-1);
                         break;
             }
+            setIcon(ii);
+            setIconTextGap(0);
+            setBorder(null);
+            setText(null);
+            setSize(ii.getImage().getWidth(null), ii.getImage().getHeight(null));
         } catch (IOException ioe) {
             System.err.printf("There was an error retrieving the resource '%s'. Now Exiting...", type == Keys.BLACK? "black_key_pressed.png": "white_key_pressed.png");
             System.exit(-1);
@@ -71,18 +58,24 @@ public class Key {
     public int depress() {
         pressed = false;
         try {
+            ImageIcon ii = null;
             if(null != type) switch (type) {
                 case BLACK:
-                    label = new JLabel(new ImageIcon(ImageIO.read(ImgResources.BLACK_KEY)));
+                    ii = new ImageIcon(ImageIO.read(ImgResources.BLACK_KEY));
                     break;
                 case WHITE:
-                    label = new JLabel(new ImageIcon(ImageIO.read(ImgResources.WHITE_KEY)));
+                    ii = new ImageIcon(ImageIO.read(ImgResources.WHITE_KEY));
                     break;
                 default:
                     System.err.printf("Unknown key type detected! Now exiting...");
                     System.exit(-1);
                         break;
             }
+            setIcon(ii);
+            setIconTextGap(0);
+            setBorder(null);
+            setText(null);
+            setSize(ii.getImage().getWidth(null), ii.getImage().getHeight(null));
         } catch (IOException ioe) {
             System.err.printf("There was an error retrieving the resource '%s'. Now Exiting...", type == Keys.BLACK? "black_key.png": "white_key.png");
             System.exit(-1);
