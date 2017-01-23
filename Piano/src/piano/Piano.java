@@ -34,6 +34,7 @@ public class Piano extends JFrame{
                 }
             });
             content.add(pianoKeys[0]);
+            content.add(pianoKeys[1]);
             //content.add(new JLabel("HI!"));
             pack();
             setSize(1000, 600);
