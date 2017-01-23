@@ -34,41 +34,31 @@ public class Piano extends JFrame implements KeyListener{
             	//channels[0].noteOn(a,100);
             }
             addKeyListener(this);
-            JPanel keyPanel = new JPanel();
             content.add(pianoKeys[0]);
             //content.add(new JLabel("HI!"));
             pack();
             setSize(1000, 600);
             setResizable(false);
         } catch(MidiUnavailableException ex) {
+            Logger.getLogger(Piano.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     public static void main(String[] args) {
         new Piano().setVisible(true);
         while(true){
-        	for(int a=60;a<72;a++){
+        	boolean[] pres=new boolean[128];
+        	for(int a=60;a<=72;a++){
     			if(noteon[a]){
-    				mc[0].noteOn(a+offset[side[a]], 100);
-    			}
-    			else{
-    				for(int b=0;b<12&&a+12*b<128;b++){
-        				mc[0].noteOff(a+12*b);
-    				}
+    				pres[a+offset[side[a]]]=true;
     			}
     		}
-        	for(int a=0;a<12;a++){
-        		for(int b=12*a;b<12*a+7&&b<128;b++){
-        			if(a*12!=60+offset[0]){
-        				mc[0].noteOff(b);
-        			}
+        	for(int a=0;a<128;a++){
+        		if(pres[a]){
+        			mc[0].noteOn(a, 100);
         		}
-        	}
-        	for(int a=0;a<12;a++){
-        		for(int b=12*a+7;b<12*a+12&&b<128;b++){
-        			if(a*12!=60+offset[1]){
-        				mc[0].noteOff(b);
-        			}
+        		else{
+        			mc[0].noteOff(a);
         		}
         	}
         	psit(100);
@@ -76,7 +66,7 @@ public class Piano extends JFrame implements KeyListener{
     }
     
     private void registerKeys() {
-    	for(int a=67;a<=71;a++){
+    	for(int a=67;a<=72;a++){
     		side[a]=1;
     	}
         keys.put(KeyEvent.VK_A, 60); //C
@@ -118,52 +108,51 @@ public class Piano extends JFrame implements KeyListener{
                 
         }
     }
-  
     @Override
     public void keyPressed(KeyEvent evt) {
-      if(keys.containsKey(evt.getKeyCode()))
-            noteon[pianoKeys[keys.get(evt.getKeyCode()) - 60].press()]=true;
-      else if(evt.getKeyCode()==KeyEvent.VK_C||evt.getKeyCode()==KeyEvent.VK_V){
-        if(evt.getKeyCode()==KeyEvent.VK_C&&!check[0]){
-          check[0]=true;
-          offset[0]-=12;
-        }
-        else if(!check[1]){
-          check[1]=true;
-          offset[0]+=12;
-        }
-      }
-      else if(evt.getKeyCode()==KeyEvent.VK_N||evt.getKeyCode()==KeyEvent.VK_M){
-        if(evt.getKeyCode()==KeyEvent.VK_N&&!check[2]){
-          check[2]=true;
-          offset[1]-=12;
-        }
-        else if(!check[3]){
-          check[3]=true;
-          offset[1]+=12;
-        }
-      }
+		if(keys.containsKey(evt.getKeyCode()))
+        	noteon[pianoKeys[keys.get(evt.getKeyCode()) - 60].press()]=true;
+		else if(evt.getKeyCode()==KeyEvent.VK_C||evt.getKeyCode()==KeyEvent.VK_V){
+			if(evt.getKeyCode()==KeyEvent.VK_C&&!check[0]){
+				check[0]=true;
+				offset[0]-=12;
+			}
+			else if(!check[1]){
+				check[1]=true;
+				offset[0]+=12;
+			}
+		}
+		else if(evt.getKeyCode()==KeyEvent.VK_N||evt.getKeyCode()==KeyEvent.VK_M){
+			if(evt.getKeyCode()==KeyEvent.VK_N&&!check[2]){
+				check[2]=true;
+				offset[1]-=12;
+			}
+			else if(!check[3]){
+				check[3]=true;
+				offset[1]+=12;
+			}
+		}
     }
-  
     @Override
     public void keyReleased(KeyEvent evt) {
-      if(keys.containsKey(evt.getKeyCode()))
-          noteon[pianoKeys[keys.get(evt.getKeyCode()) - 60].depress()]=false;
-      else if(evt.getKeyCode()==KeyEvent.VK_C||evt.getKeyCode()==KeyEvent.VK_V||evt.getKeyCode()==KeyEvent.VK_N||evt.getKeyCode()==KeyEvent.VK_M){
-        if(evt.getKeyCode()==KeyEvent.VK_C){
-          check[0]=false;
-        }
-        if(evt.getKeyCode()==KeyEvent.VK_V){
-          check[1]=false;
-        }
-        if(evt.getKeyCode()==KeyEvent.VK_N){
-          check[2]=false;
-        }
-        if(evt.getKeyCode()==KeyEvent.VK_M){
-          check[3]=false;
-        }
-      }
+		if(keys.containsKey(evt.getKeyCode()))
+    		noteon[pianoKeys[keys.get(evt.getKeyCode()) - 60].press()]=false;
+		else if(evt.getKeyCode()==KeyEvent.VK_C||evt.getKeyCode()==KeyEvent.VK_V||evt.getKeyCode()==KeyEvent.VK_N||evt.getKeyCode()==KeyEvent.VK_M){
+			if(evt.getKeyCode()==KeyEvent.VK_C){
+				check[0]=false;
+			}
+			if(evt.getKeyCode()==KeyEvent.VK_V){
+				check[1]=false;
+			}
+			if(evt.getKeyCode()==KeyEvent.VK_N){
+				check[2]=false;
+			}
+			if(evt.getKeyCode()==KeyEvent.VK_M){
+				check[3]=false;
+			}
+		}
     }
-    
-    public void keyTyped(KeyEvent evt){}
+	@Override
+	public void keyTyped(KeyEvent evt) {
+	}
 }
