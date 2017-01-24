@@ -15,6 +15,8 @@ public class Piano extends JFrame implements KeyListener{
     private static int[] side=new int[128];
 	private Renderer renderer;
     private JPanel keyPanel;
+    public static Piano P;
+    
     public Piano() {
         try{
         	renderer=new Renderer();
@@ -85,11 +87,11 @@ public class Piano extends JFrame implements KeyListener{
     			S.start();
     		}catch(Exception e){}
     	}
-        Piano P = new Piano();
+        P = new Piano();
         P.setVisible(true);
+        int[][]rc = new int[10000][10000];
         int[][] im=ImperialMarch();
-        //P.play(im, 250);
-        int[][]
+        P.play(im, 250);
         P.free();
     }
     public void free(){
@@ -218,7 +220,6 @@ public class Piano extends JFrame implements KeyListener{
     				}
     			}
     		}
-			keyPanel.revalidate();
     		psit(100);
     	}
     }
