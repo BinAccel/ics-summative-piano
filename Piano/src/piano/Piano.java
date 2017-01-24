@@ -32,7 +32,9 @@ public class Piano extends JFrame implements KeyListener{
             JPanel keyPanel = new JPanel();
             OverlayLayout ol = new OverlayLayout(keyPanel);
             keyPanel.setLayout(ol);
-            pianoKeys[4].setAlignmentX(0.0f);
+            pianoKeys[5].setAlignmentX(0.0f);
+            pianoKeys[5].setAlignmentY(0.0f);
+            pianoKeys[4].setAlignmentX(0.5f);
             pianoKeys[4].setAlignmentY(0.0f);
             pianoKeys[3].setAlignmentX(0.0f);
             pianoKeys[3].setAlignmentY(0.0f);
