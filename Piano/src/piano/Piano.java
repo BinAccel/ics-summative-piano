@@ -1,6 +1,6 @@
 package piano;
 
-import java.awt.Container;
+import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
@@ -31,9 +31,14 @@ public class Piano extends JFrame implements KeyListener{
             addKeyListener(this);
             JPanel keyPanel = new JPanel();
             OverlayLayout ol = new OverlayLayout(keyPanel);
-            ol.addLayoutComponent("K1", pianoKeys[0]);
+            keyPanel.add(pianoKeys[0]);
+            ol.addLayoutComponent(pianoKeys[0], new Rectangle(0, 0, 100, 100));
+            pianoKeys[0].setSize(1000, 1000);
+            pianoKeys[0].add(pianoKeys[1]);
+            OverlayLayout ol2 = new OverlayLayout(pianoKeys[0]);
+            ol2.addLayoutComponent(pianoKeys[1], new Rectangle(new Point(-20, -20), pianoKeys[1].getPreferredSize()));
             //ol.addLayoutComponent("Key 2", pianoKeys[1]);
-            content.add(keyPanel);
+            content.add(keyPanel, BorderLayout.WEST);
             //content.add(pianoKeys[0]);
             pack();
             setSize(1000, 600);
