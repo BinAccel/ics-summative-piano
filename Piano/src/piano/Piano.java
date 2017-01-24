@@ -41,6 +41,9 @@ public class Piano extends JFrame implements KeyListener{
         }
     }
     public void repaint(Graphics g) {
+    	Color col=new Color(80,80,80);
+    	g.setColor(col);
+    	g.fillRect(20, 100, 940, 163);
     	Color[][] shade=new Color[2][2];
     	int[]left=new int[128];
     	int ptr=0;
@@ -48,8 +51,8 @@ public class Piano extends JFrame implements KeyListener{
     	shade[1][0]=new Color(20,20,20);
     	shade[0][1]=new Color(250,250,150);
     	shade[1][1]=new Color(100,100,200);
-    	g.setColor(Color.white);
     	int nextwhite=40;
+    	int height=160;
     	for(int a=36;a<=108;a++){
     		g.setColor(Color.white);
     		if(a%12==0||a%12==2||a%12==4||a%12==5||a%12==7||a%12==9||a%12==11){
@@ -57,10 +60,10 @@ public class Piano extends JFrame implements KeyListener{
     			ptr++;
     			if(pianoKeys[a].isPressed())g.setColor(shade[0][1]);
     			else g.setColor(shade[0][0]);
-    			g.fillRect(nextwhite,50,20,100);
+    			g.fillRect(nextwhite,height,20,100);
     			nextwhite+=21;
     			g.setColor(Color.black);
-    			if(a!=108)g.fillRect(nextwhite-1,50,1,100);
+    			if(a!=108)g.fillRect(nextwhite-1,height,1,100);
     		}
     		else{
     		}
@@ -74,7 +77,7 @@ public class Piano extends JFrame implements KeyListener{
     		else{
     			if(pianoKeys[a].isPressed())g.setColor(shade[1][1]);
     			else g.setColor(shade[1][0]);
-    			g.fillRect(left[rtp]-6, 50, 11, 75);
+    			g.fillRect(left[rtp]-6, height, 11, 75);
     		}
     	}
 	}
@@ -178,6 +181,32 @@ public class Piano extends JFrame implements KeyListener{
         add(s1, 67, 240, 5);
         add(s1, 70, 246, 2);
         add(s1, 74, 248, 15);
+    	return s1;
+    }
+	public static int[][] OCanada(){
+    	int[][] s1=new int[100][128];
+    	for(int a=0;a<128;a++){
+    		num[a]=0;
+    	}
+    	add(s1, 69, 8, 15);
+    	add(s1, 72, 24, 10);
+    	add(s1, 72, 35, 4);
+    	add(s1, 65, 40, 23);
+    	add(s1, 67, 64, 7);
+    	add(s1, 69, 72, 7);
+    	add(s1, 70, 80, 7);
+    	add(s1, 72, 88, 7);
+    	add(s1, 74, 96, 7);
+    	add(s1, 67, 104, 31);
+    	add(s1, 69, 136, 15);
+    	add(s1, 71, 152, 10);
+    	add(s1, 71, 163, 4);
+    	add(s1, 72, 168, 23);
+    	add(s1, 74, 192, 7);
+    	add(s1, 76, 200, 7);
+    	add(s1, 76, 208, 7);
+    	add(s1, 74, 216, 7);
+    	add(s1, 74, 224, 7);
     	return s1;
     }
     private void registerKeys() {
