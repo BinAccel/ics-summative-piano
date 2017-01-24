@@ -165,13 +165,15 @@ public class Piano extends JFrame implements KeyListener{
     				cur[a]++;
     			}
     			if(on[a]){
+    				if(!pianoKeys[keyMod(a)].isPressed())
+    					pianoKeys[keyMod(a)].press();
     				mc[0].noteOn(a, 100);
-    				if(!pianoKeys[keyMod(a)].isPressed()) pianoKeys[keyMod(a)].press();
     				keyPanel.revalidate();
     			}
     			else{
+    				if(pianoKeys[keyMod(a)].isPressed())
+    					pianoKeys[keyMod(a)].depress();
     				mc[0].noteOff(a);
-    				if(pianoKeys[keyMod(a)].isPressed()) pianoKeys[keyMod(a)].depress();
     				keyPanel.revalidate();
     			}
     		}
