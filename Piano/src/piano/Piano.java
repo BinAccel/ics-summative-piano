@@ -4,12 +4,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
-import java.util.logging.*;
 import javax.sound.midi.*;
 import javax.swing.*;
-import javax.swing.Timer;
 
 public class Piano extends JFrame implements KeyListener{
+	public Renderer renderer;
+	public static Piano P;
     public static int[] offset=new int[2];
     public static MidiChannel[]mc;
     public static boolean[] noteon=new boolean[128];
@@ -18,55 +18,74 @@ public class Piano extends JFrame implements KeyListener{
     public JPanel keyPanel;
     public Piano() {
         try{
+        	renderer=new Renderer();
             keys = new HashMap<>();
             pianoKeys = new Key[128];
+            add(renderer);
+    		setVisible(true);
             registerKeys();
             setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
             setTitle("Piano");
-            Container content = getContentPane();
             synthesizer = MidiSystem.getSynthesizer();
             synthesizer.open();
             synthesizer.loadAllInstruments(synthesizer.getDefaultSoundbank());
             mc = synthesizer.getChannels();
             mc[0].programChange(0,54);
             addKeyListener(this);
-            keyPanel = new JPanel();
-            OverlayLayout ol = new OverlayLayout(keyPanel);
-            keyPanel.setLayout(ol);
-            pianoKeys[65].setAlignmentX(0.0f);
-            pianoKeys[65].setAlignmentY(0.0f);
-            pianoKeys[64].setAlignmentX(0.5f);
-            pianoKeys[64].setAlignmentY(0.0f);
-            pianoKeys[63].setAlignmentX(0.0f);
-            pianoKeys[63].setAlignmentY(0.0f);
-            pianoKeys[62].setAlignmentX(0.5f);
-            pianoKeys[62].setAlignmentY(0.0f);
-            pianoKeys[61].setAlignmentX(0.5f);
-            pianoKeys[61].setAlignmentY(0.0f);
-            pianoKeys[60].setAlignmentX(1.0f);
-            pianoKeys[60].setAlignmentY(0.0f);
-            keyPanel.add(pianoKeys[61]);
-            keyPanel.add(pianoKeys[63]);
-            keyPanel.add(pianoKeys[60]);
-            keyPanel.add(pianoKeys[62]);
-            keyPanel.add(pianoKeys[64]);
-            content.add(keyPanel, BorderLayout.WEST);
-            keyPanel.revalidate();
             pack();
-            setSize(1000, 600);
+            setSize(1000, 400);
             setResizable(false);
         } catch(MidiUnavailableException ex) {
         }
     }
+    public void repaint(Graphics g) {
+    	Color[][] shade=new Color[2][2];
+    	int[]left=new int[128];
+    	int ptr=0;
+    	shade[0][0]=new Color(255,255,255);
+    	shade[1][0]=new Color(20,20,20);
+    	shade[0][1]=new Color(250,250,150);
+    	shade[1][1]=new Color(100,100,200);
+    	g.setColor(Color.white);
+    	int nextwhite=40;
+    	for(int a=36;a<=108;a++){
+    		g.setColor(Color.white);
+    		if(a%12==0||a%12==2||a%12==4||a%12==5||a%12==7||a%12==9||a%12==11){
+    			left[ptr]=nextwhite;
+    			ptr++;
+    			if(pianoKeys[a].isPressed())g.setColor(shade[0][1]);
+    			else g.setColor(shade[0][0]);
+    			g.fillRect(nextwhite,50,20,100);
+    			nextwhite+=21;
+    			g.setColor(Color.black);
+    			if(a!=108)g.fillRect(nextwhite-1,50,1,100);
+    		}
+    		else{
+    		}
+    	}
+    	int rtp=0;
+    	for(int a=36;a<=108;a++){
+    		g.setColor(Color.white);
+    		if(a%12==0||a%12==2||a%12==4||a%12==5||a%12==7||a%12==9||a%12==11){
+    			rtp++;
+    		}
+    		else{
+    			if(pianoKeys[a].isPressed())g.setColor(shade[1][1]);
+    			else g.setColor(shade[1][0]);
+    			g.fillRect(left[rtp]-6, 50, 11, 75);
+    		}
+    	}
+	}
     public static int[] num=new int[128];
     public static void main(String[] args) {
-        Piano P = new Piano();
+    	P = new Piano();
         P.setVisible(true);
         int[][] im=ImperialMarch();
         //P.play(im, 250);
         P.free();
     }
     public void free(){
+    	renderer.repaint();
     	while(true){
         	boolean[] pres=new boolean[128];
         	for(int a=60;a<=72;a++){
@@ -88,7 +107,7 @@ public class Piano extends JFrame implements KeyListener{
     				}
         		}
         	}
-        	keyPanel.revalidate();
+        	renderer.repaint();
         	psit(100);
         }
     }
@@ -172,25 +191,20 @@ public class Piano extends JFrame implements KeyListener{
     	boolean[] on=new boolean[128];
     	int[] cur=new int[128];
     	for(int time=1;time<=length;time++){
+    		renderer.repaint();
     		for(int a=0;a<128;a++){
     			if(aa[cur[a]][a]==time){
     				on[a]=!on[a];
     				cur[a]++;
     			}
     			if(on[a]){
-    				if(!pianoKeys[a].isPressed())
-    					pianoKeys[a].press();
     				mc[0].noteOn(a, 100);
-    				keyPanel.revalidate();
     				if(!pianoKeys[a].isPressed()){
     					pianoKeys[a].press();
     				}
     			}
     			else{
-    				if(pianoKeys[a].isPressed())
-    					pianoKeys[a].depress();
     				mc[0].noteOff(a);
-    				keyPanel.revalidate();
     				if(pianoKeys[a].isPressed()){
     					pianoKeys[a].depress();
     				}
@@ -200,7 +214,6 @@ public class Piano extends JFrame implements KeyListener{
     		psit(100);
     	}
     }
-    
     public static void add(int[][] aa, int ind, int start, int len){
     	aa[num[ind]][ind]=start;
     	num[ind]++;
@@ -215,6 +228,7 @@ public class Piano extends JFrame implements KeyListener{
                 
         }
     }
+
     @Override
     public void keyPressed(KeyEvent evt) {
         if(keys.containsKey(evt.getKeyCode())) {
@@ -223,11 +237,11 @@ public class Piano extends JFrame implements KeyListener{
         else if(evt.getKeyCode()==KeyEvent.VK_C||evt.getKeyCode()==KeyEvent.VK_V){
                 if(evt.getKeyCode()==KeyEvent.VK_C&&!check[0]){
                         check[0]=true;
-                        if(offset[0]>=-24)offset[0]-=12;
+                        if(offset[0]>=-12)offset[0]-=12;
                 }
                 else if(!check[1]){
                         check[1]=true;
-                        if(offset[0]<=36)offset[0]+=12;
+                        if(offset[0]<=24)offset[0]+=12;
                 }
         }
         else if(evt.getKeyCode()==KeyEvent.VK_N||evt.getKeyCode()==KeyEvent.VK_M){
@@ -241,7 +255,7 @@ public class Piano extends JFrame implements KeyListener{
                 }
         }
     }
-    @Override
+	@Override
     public void keyReleased(KeyEvent evt) {
 		if(keys.containsKey(evt.getKeyCode())) {
 			noteon[keys.get(evt.getKeyCode()) - 60]=false;
