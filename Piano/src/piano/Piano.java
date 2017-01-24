@@ -59,7 +59,7 @@ public class Piano extends JFrame implements KeyListener{
     public static void main(String[] args) {
         new Piano().setVisible(true);
         int[][] im=ImperialMarch();
-        play(im, 250);
+        //play(im, 250);
         while(true){
         	boolean[] pres=new boolean[128];
         	for(int a=60;a<=72;a++){
@@ -186,8 +186,10 @@ public class Piano extends JFrame implements KeyListener{
     }
     @Override
     public void keyPressed(KeyEvent evt) {
-        if(keys.containsKey(evt.getKeyCode()))
+        if(keys.containsKey(evt.getKeyCode())) {
         noteon[keys.get(evt.getKeyCode()) - 60]=true;
+        pianoKeys[keys.get(evt.getKeyCode()) - 60].press();
+        }
         else if(evt.getKeyCode()==KeyEvent.VK_C||evt.getKeyCode()==KeyEvent.VK_V){
                 if(evt.getKeyCode()==KeyEvent.VK_C&&!check[0]){
                         check[0]=true;
@@ -211,7 +213,10 @@ public class Piano extends JFrame implements KeyListener{
     }
     @Override
     public void keyReleased(KeyEvent evt) {
-		if(keys.containsKey(evt.getKeyCode())) noteon[keys.get(evt.getKeyCode()) - 60]=false;
+		if(keys.containsKey(evt.getKeyCode())) {
+			noteon[keys.get(evt.getKeyCode()) - 60]=false;
+			pianoKeys[keys.get(evt.getKeyCode()) - 60].depress();
+		}
 		else if(evt.getKeyCode()==KeyEvent.VK_C||evt.getKeyCode()==KeyEvent.VK_V||evt.getKeyCode()==KeyEvent.VK_N||evt.getKeyCode()==KeyEvent.VK_M){
 			if(evt.getKeyCode()==KeyEvent.VK_C) check[0]=false;
 			if(evt.getKeyCode()==KeyEvent.VK_V) check[1]=false;
