@@ -47,7 +47,8 @@ public class Piano extends JFrame implements KeyListener{
             pack();
             setSize(1000, 400);
             setResizable(false);
-        } catch(MidiUnavailableException ex) {
+        }
+        catch(MidiUnavailableException ex) {
         }
     }
     public void repaint(Graphics g) {
@@ -103,10 +104,16 @@ public class Piano extends JFrame implements KeyListener{
     			S.start();
     		}catch(Exception e){}
     	}
-        P = new Piano();
+    	P = new Piano();
         P.setVisible(true);
+        int[][] song;
         int[][] im=ImperialMarch();
-        P.play(im, 250);
+        int[][] oc=OCanada();
+        song=combine(im, oc, 300);
+        //song=ImperialMarch();
+        P.play(song, 280, 80);
+        //P.play(song, 280, 100);
+        //P.play(song,280,100);
         rc.start();
         P.free();
     }
@@ -221,6 +228,40 @@ public class Piano extends JFrame implements KeyListener{
     	add(s1, 74, 224, 8);
     	return s1;
     }
+    public static int[][] combine(int[][] aa, int[][] bb, int length){
+    	int[][] cc=new int[10000][128];
+    	for(int a=0;a<128;a++){
+    		num[a]=0;
+    	}
+    	boolean[][] on=new boolean[128][2];
+    	boolean[] both=new boolean[128];
+    	int[][] cur=new int[128][2];
+    	for(int time=1;time<=length;time++){
+    		for(int a=0;a<128;a++){
+    			if(aa[cur[a][0]][a]==time){
+    				on[a][0]=!on[a][0];
+    				cur[a][0]++;
+    			}
+    		}
+    		for(int a=0;a<128;a++){
+    			if(bb[cur[a][1]][a]==time){
+    				on[a][1]=!on[a][1];
+    				cur[a][1]++;
+    			}
+    		}
+    		for(int a=0;a<128;a++){
+    			if((on[a][0]||on[a][1])&&!both[a]){
+    				both[a]=true;
+    				sadd(cc, a, time);
+    			}
+    			else if((!on[a][0]&&!on[a][1])&&both[a]){
+    				both[a]=false;
+    				sadd(cc, a, time);
+    			}
+    		}
+    	}
+    	return cc;
+    }
     private void registerKeys() {
     	for(int a=67;a<=72;a++) side[a]=1;
     	for(int a=0;a<128;a++){
@@ -300,7 +341,7 @@ public class Piano extends JFrame implements KeyListener{
     	num[ind]++;
     }
     public static void psit(int x) {
-        try {
+        try{
             Thread.sleep(x);
         }
         catch (Exception e){
