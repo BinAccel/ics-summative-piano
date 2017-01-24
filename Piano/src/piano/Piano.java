@@ -16,9 +16,10 @@ public class Piano extends JFrame implements KeyListener{
 	private Renderer renderer;
     private JPanel keyPanel;
     public static Piano P;
-    
+    private static Recorder rc;
     public Piano() {
         try{
+        	rc = new Recorder();
         	renderer=new Renderer();
             keys = new HashMap<>();
             pianoKeys = new Key[128];
@@ -89,9 +90,9 @@ public class Piano extends JFrame implements KeyListener{
     	}
         P = new Piano();
         P.setVisible(true);
-        int[][]rc = new int[10000][10000];
         int[][] im=ImperialMarch();
         P.play(im, 250);
+        rc.start();
         P.free();
     }
     public void free(){
@@ -106,12 +107,21 @@ public class Piano extends JFrame implements KeyListener{
         	for(int a=0;a<128;a++){
         		if(pres[a]){
         			mc[0].noteOn(a, 100);
+        			if(!rc.isPressed(a)) {
+        				rc.press(a);
+        				rc.record(a);
+        			}
         			if(!pianoKeys[a].isPressed()){
     					pianoKeys[a].press();
     				}
+        			rc.record(a);
         		}
         		else{
         			mc[0].noteOff(a);
+        			if(rc.isPressed(a)) {
+        				rc.press(a);
+        				rc.record(a);
+        			}
         			if(pianoKeys[a].isPressed()){
     					pianoKeys[a].depress();
     				}
