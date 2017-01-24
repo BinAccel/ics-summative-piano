@@ -15,6 +15,7 @@ public class Piano extends JFrame implements KeyListener{
     public static boolean[] noteon=new boolean[128];
     public static boolean[] check=new boolean[4];
     public static int[] side=new int[128];
+    public JPanel keyPanel;
     public Piano() {
         try{
             keys = new HashMap<>();
@@ -29,7 +30,7 @@ public class Piano extends JFrame implements KeyListener{
             mc = synthesizer.getChannels();
             mc[0].programChange(0,54);
             addKeyListener(this);
-            JPanel keyPanel = new JPanel();
+            keyPanel = new JPanel();
             OverlayLayout ol = new OverlayLayout(keyPanel);
             keyPanel.setLayout(ol);
             pianoKeys[5].setAlignmentX(0.0f);
@@ -59,9 +60,10 @@ public class Piano extends JFrame implements KeyListener{
     }
     public static int[] num=new int[128];
     public static void main(String[] args) {
-        new Piano().setVisible(true);
+        Piano P = new Piano();
+        P.setVisible(true);
         int[][] im=ImperialMarch();
-        //play(im, 250);
+        P.play(im, 250);
         while(true){
         	boolean[] pres=new boolean[128];
         	for(int a=60;a<=72;a++){
@@ -153,7 +155,7 @@ public class Piano extends JFrame implements KeyListener{
     private HashMap<Integer, Integer>keys;
     private Synthesizer synthesizer ;
     Key[]pianoKeys;
-    public static void play(int[][] aa, int length){
+    public void play(int[][] aa, int length){
     	boolean[] on=new boolean[128];
     	int[] cur=new int[128];
     	for(int time=1;time<=length;time++){
@@ -164,14 +166,23 @@ public class Piano extends JFrame implements KeyListener{
     			}
     			if(on[a]){
     				mc[0].noteOn(a, 100);
+    				if(!pianoKeys[keyMod(a)].isPressed()) pianoKeys[keyMod(a)].press();
+    				keyPanel.revalidate();
     			}
     			else{
     				mc[0].noteOff(a);
+    				if(pianoKeys[keyMod(a)].isPressed()) pianoKeys[keyMod(a)].depress();
+    				keyPanel.revalidate();
     			}
     		}
     		psit(100);
     	}
     }
+    
+    private int keyMod(int i) {
+    	return ((i - 60) % pianoKeys.length + pianoKeys.length) % pianoKeys.length;
+    }
+    
     public static void add(int[][] aa, int ind, int start, int len){
     	aa[num[ind]][ind]=start;
     	num[ind]++;

@@ -84,6 +84,10 @@ public class Key extends JLabel{
         return keycode;
     }
     
+    public boolean isPressed() {
+    	return pressed;
+    }
+    
     public Dimension getPreferredSize()
     {
         return getSize();
