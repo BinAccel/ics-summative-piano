@@ -151,74 +151,74 @@ public class Piano extends JFrame implements KeyListener{
     	for(int a=0;a<128;a++){
     		num[a]=0;
     	}
-        add(s1, 67, 8, 7);
-        add(s1, 67, 16, 7);
-        add(s1, 67, 24, 7);
-        add(s1, 63, 32, 5);
+        add(s1, 67, 8, 8);
+        add(s1, 67, 16, 8);
+        add(s1, 67, 24, 8);
+        add(s1, 63, 32, 6);
         add(s1, 70, 38, 2);
-        add(s1, 67, 40, 7);
-        add(s1, 63, 48, 5);
+        add(s1, 67, 40, 8);
+        add(s1, 63, 48, 6);
         add(s1, 70, 54, 2);
-        add(s1, 67, 56, 15);
-        add(s1, 74, 72, 7);
-        add(s1, 74, 80, 7);
-        add(s1, 74, 88, 7);
-        add(s1, 75, 96, 5);
+        add(s1, 67, 56, 16);
+        add(s1, 74, 72, 8);
+        add(s1, 74, 80, 8);
+        add(s1, 74, 88, 8);
+        add(s1, 75, 96, 6);
         add(s1, 70, 102, 2);
-        add(s1, 66, 104, 7);
-        add(s1, 63, 112, 5);
+        add(s1, 66, 104, 8);
+        add(s1, 63, 112, 6);
         add(s1, 70, 118, 2);
-        add(s1, 67, 120, 15);
-        add(s1, 79, 136, 7);
-        add(s1, 67, 144, 5);
+        add(s1, 67, 120, 16);
+        add(s1, 79, 136, 8);
+        add(s1, 67, 144, 6);
         add(s1, 67, 150, 2);
-        add(s1, 79, 152, 7);
-        add(s1, 78, 160, 5);
+        add(s1, 79, 152, 8);
+        add(s1, 78, 160, 6);
         add(s1, 77, 166, 2);
         add(s1, 76, 168, 2);
         add(s1, 75, 170, 2);
         add(s1, 76, 172, 4);
         add(s1, 68, 179, 4);
-        add(s1, 73, 184, 7);
-        add(s1, 72, 192, 5);
+        add(s1, 73, 184, 8);
+        add(s1, 72, 192, 6);
         add(s1, 71, 198, 2);
         add(s1, 70, 200, 2);
         add(s1, 69, 202, 2);
         add(s1, 70, 204, 4);
         add(s1, 63, 211, 4);
-        add(s1, 66, 216, 7);
-        add(s1, 63, 224, 5);
+        add(s1, 66, 216, 8);
+        add(s1, 63, 224, 6);
         add(s1, 66, 230, 2);
-        add(s1, 70, 232, 7);
-        add(s1, 67, 240, 5);
+        add(s1, 70, 232, 8);
+        add(s1, 67, 240, 6);
         add(s1, 70, 246, 2);
-        add(s1, 74, 248, 15);
+        add(s1, 74, 248, 16);
     	return s1;
     }
-	public static int[][] OCanada(){
+    public static int[][] OCanada(){
     	int[][] s1=new int[100][128];
     	for(int a=0;a<128;a++){
     		num[a]=0;
     	}
-    	add(s1, 69, 8, 15);
+    	add(s1, 69, 8, 16);
     	add(s1, 72, 24, 10);
     	add(s1, 72, 35, 4);
-    	add(s1, 65, 40, 23);
-    	add(s1, 67, 64, 7);
-    	add(s1, 69, 72, 7);
-    	add(s1, 70, 80, 7);
-    	add(s1, 72, 88, 7);
-    	add(s1, 74, 96, 7);
-    	add(s1, 67, 104, 31);
-    	add(s1, 69, 136, 15);
+    	add(s1, 65, 40, 24);
+    	add(s1, 67, 64, 8);
+    	add(s1, 69, 72, 8);
+    	add(s1, 70, 80, 8);
+    	add(s1, 72, 88, 8);
+    	add(s1, 74, 96, 8);
+    	add(s1, 67, 104, 32);
+    	add(s1, 69, 136, 16);
     	add(s1, 71, 152, 10);
     	add(s1, 71, 163, 4);
-    	add(s1, 72, 168, 23);
-    	add(s1, 74, 192, 7);
-    	add(s1, 76, 200, 7);
-    	add(s1, 76, 208, 7);
-    	add(s1, 74, 216, 7);
-    	add(s1, 74, 224, 7);
+    	add(s1, 72, 168, 24);
+    	add(s1, 74, 192, 8);
+    	add(s1, 76, 200, 8);
+    	add(s1, 76, 208, 8);
+    	add(s1, 74, 216, 8);
+    	add(s1, 74, 224, 8);
     	return s1;
     }
     private void registerKeys() {
@@ -248,36 +248,55 @@ public class Piano extends JFrame implements KeyListener{
     private HashMap<Integer, Integer>keys;
     private Synthesizer synthesizer ;
     Key[]pianoKeys;
-    public void play(int[][] aa, int length){
+    public void play(int[][] aa, int length, int pause){
     	boolean[] on=new boolean[128];
     	int[] cur=new int[128];
+    	renderer.repaint();
     	for(int time=1;time<=length;time++){
-    		renderer.repaint();
     		for(int a=0;a<128;a++){
     			if(aa[cur[a]][a]==time){
-    				on[a]=!on[a];
-    				cur[a]++;
-    			}
-    			if(on[a]){
-    				mc[0].noteOn(a, 100);
-    				if(!pianoKeys[a].isPressed()){
-    					pianoKeys[a].press();
-    				}
+    				while(aa[cur[a]][a]==time){
+        				on[a]=!on[a];
+        				cur[a]++;
+        				if(on[a]){
+            				mc[0].noteOn(a, 100);
+            				if(!pianoKeys[a].isPressed()){
+            					pianoKeys[a].press();
+            				}
+            			}
+            			else{
+            				mc[0].noteOff(a);
+            				if(pianoKeys[a].isPressed()){
+            					pianoKeys[a].depress();
+            				}
+            			}
+        			}
     			}
     			else{
-    				mc[0].noteOff(a);
-    				if(pianoKeys[a].isPressed()){
-    					pianoKeys[a].depress();
-    				}
+    				if(on[a]){
+        				mc[0].noteOn(a, 100);
+        				if(!pianoKeys[a].isPressed()){
+        					pianoKeys[a].press();
+        				}
+        			}
+        			else{
+        				mc[0].noteOff(a);
+        				if(pianoKeys[a].isPressed()){
+        					pianoKeys[a].depress();
+        				}
+        			}
     			}
     		}
-    		psit(100);
+    		renderer.repaint();
+    		psit(pause);
     	}
     }
     public static void add(int[][] aa, int ind, int start, int len){
-    	aa[num[ind]][ind]=start;
-    	num[ind]++;
-    	aa[num[ind]][ind]=start+len;
+    	sadd(aa, ind, start);
+    	sadd(aa, ind, start+len);
+    }
+    public static void sadd(int[][] aa, int ind, int time){
+    	aa[num[ind]][ind]=time;
     	num[ind]++;
     }
     public static void psit(int x) {
