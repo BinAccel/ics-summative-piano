@@ -10,12 +10,12 @@ import javax.swing.*;
 import javax.swing.Timer;
 
 public class Piano extends JFrame implements KeyListener{
-    public static int[] offset=new int[2];
-    public static MidiChannel[]mc;
-    public static boolean[] noteon=new boolean[128];
-    public static boolean[] check=new boolean[4];
-    public static int[] side=new int[128];
-    public JPanel keyPanel;
+    private static int[] offset=new int[2];
+    private static MidiChannel[]mc;
+    private static boolean[] noteon=new boolean[128];
+    private static boolean[] check=new boolean[4];
+    private static int[] side=new int[128];
+    private JLayeredPane keyPanel;
     public Piano() {
         try{
             keys = new HashMap<>();
@@ -30,28 +30,17 @@ public class Piano extends JFrame implements KeyListener{
             mc = synthesizer.getChannels();
             mc[0].programChange(0,54);
             addKeyListener(this);
-            keyPanel = new JPanel();
-            OverlayLayout ol = new OverlayLayout(keyPanel);
-            keyPanel.setLayout(ol);
-            pianoKeys[65].setAlignmentX(0.0f);
-            pianoKeys[65].setAlignmentY(0.0f);
-            pianoKeys[64].setAlignmentX(0.5f);
-            pianoKeys[64].setAlignmentY(0.0f);
-            pianoKeys[63].setAlignmentX(0.0f);
-            pianoKeys[63].setAlignmentY(0.0f);
-            pianoKeys[62].setAlignmentX(0.5f);
-            pianoKeys[62].setAlignmentY(0.0f);
-            pianoKeys[61].setAlignmentX(0.5f);
-            pianoKeys[61].setAlignmentY(0.0f);
-            pianoKeys[60].setAlignmentX(1.0f);
-            pianoKeys[60].setAlignmentY(0.0f);
-            keyPanel.add(pianoKeys[61]);
-            keyPanel.add(pianoKeys[63]);
-            keyPanel.add(pianoKeys[60]);
-            keyPanel.add(pianoKeys[62]);
-            keyPanel.add(pianoKeys[64]);
+            keyPanel = new JLayeredPane();
+            keyPanel.setSize(1000, 600);
+            pianoKeys[0].setLocation(0, 0);
+            pianoKeys[0].setSize(50, 500);
+            keyPanel.add(pianoKeys[60], 0, -1);
+            keyPanel.add(pianoKeys[61], 1, -1);
+            keyPanel.add(pianoKeys[62], 0, -1);
+            keyPanel.add(pianoKeys[63], 1, -1);
+            keyPanel.add(pianoKeys[64], 0, -1);
             content.add(keyPanel, BorderLayout.WEST);
-            keyPanel.revalidate();
+            setLocation(0, 0);
             pack();
             setSize(1000, 600);
             setResizable(false);
@@ -60,10 +49,19 @@ public class Piano extends JFrame implements KeyListener{
     }
     public static int[] num=new int[128];
     public static void main(String[] args) {
+    	if(args.length > 0) {
+    		try {
+    			File f = new File(args[0]);
+    			Sequencer S = MidiSystem.getSequencer();
+    			S.setSequence(new BufferedInputStream(new FileInputStream(f)));
+    			S.start();
+    		}catch(Exception e){}
+    	}
         Piano P = new Piano();
         P.setVisible(true);
         int[][] im=ImperialMarch();
         //P.play(im, 250);
+        int[][]
         P.free();
     }
     public void free(){
