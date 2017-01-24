@@ -4,8 +4,9 @@ package piano;
  *
  * @author roger
  */
-
-import javax.sound.midi.*;
+import javax.sound.midi.Instrument;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
 public class Instruments {
     
     /**

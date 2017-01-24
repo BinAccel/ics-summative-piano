@@ -1,9 +1,12 @@
 package piano;
 
 import java.awt.Dimension;
-import java.io.*;
-import javax.imageio.*;
-import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 /**
  *
  * @author roger

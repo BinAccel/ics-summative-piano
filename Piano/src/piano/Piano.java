@@ -1,11 +1,21 @@
 package piano;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
-import javax.sound.midi.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.HashMap;
+
+import javax.sound.midi.MidiChannel;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Sequencer;
+import javax.sound.midi.Synthesizer;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class Piano extends JFrame implements KeyListener{
     private static int[] offset=new int[2];
@@ -86,8 +96,10 @@ public class Piano extends JFrame implements KeyListener{
     	if(args.length > 0) {
     		try {
     			File f = new File(args[0]);
+    			System.out.println(f);
     			Sequencer S = MidiSystem.getSequencer();
     			S.setSequence(new BufferedInputStream(new FileInputStream(f)));
+    			//This doesn't work
     			S.start();
     		}catch(Exception e){}
     	}
