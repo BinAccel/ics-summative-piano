@@ -31,7 +31,7 @@ public class Piano extends JFrame implements KeyListener{
         try{
         	rc = new Recorder();
         	renderer=new Renderer();
-            keys = new HashMap<>();
+            keys = new HashMap<Integer, Integer>();
             pianoKeys = new Key[128];
             add(renderer);
     		setVisible(true);
